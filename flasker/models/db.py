@@ -5,7 +5,7 @@ import click
 from flask.cli import with_appcontext
 
 
-engine = create_engine('sqlite:///:memory:')
+engine = create_engine('sqlite:///flasker.db')
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -24,7 +24,7 @@ def init_db_command():
 
 
 def init_app(app):
-    app.teardown_appcontext(close_db)
+#    app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
 
 
