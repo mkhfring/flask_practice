@@ -20,26 +20,75 @@ def register():
         password = request.form['password']
         error = None
 
-    if not username:
-        error = 'Username is required.'
-    elif not password:
-        error = 'Password is required.'
+        if not username:
+            error = 'Username is required.'
+        elif not password:
+            error = 'Password is required.'
 
-    member = User.get_member(password)
-    if member:
-        error = 'User {} is already registered.'.format(username)
+        member = User.get_member(username)
+        if member:
+            error = 'User {} is already registered.'.format(username)
 
+        if error is None:
+            User.add_member(username, generate_password_hash(password))
 
-#    elif db.execute(
-#        'SELECT id FROM user WHERE username = ?', (username,)
-#    ).fetchone() is not None:
-#        error = 'User {} is already registered.'.format(username)
+            return redirect(url_for('auth.login'))
 
-    if error is None:
-        User.add_member(username, password)
-
-        return redirect(url_for('auth.login'))
-
-    flash(error)
+        flash(error)
 
     return render_template('auth/register.html')
+
+
+@bp.route('/login', methods=('GET', 'POST'))
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        error = None
+        member = User.get_member(username)
+
+        if member is None:
+            error = 'Incorrect username.'
+        elif not check_password_hash(member.password, password):
+            error = 'Incorrect password.'
+
+        if error is None:
+            session.clear()
+            session['user_id'] = member.id
+            return redirect(url_for('index'))
+
+        flash(error)
+
+    return render_template('auth/login.html')
+
+
+@bp.before_app_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        member = User.get_member_by_id(user_id)
+        if member:
+            g.user = member
+
+        else:
+            g.user = None
+
+
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+
+        return view(**kwargs)
+
+    return wrapped_view

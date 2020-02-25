@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
+
 from .db import Base, session
 
 
@@ -20,7 +21,12 @@ class User(Base):
 
     @classmethod
     def add_member(cls, user_name, password):
-        import pudb; pudb.set_trace()  # XXX BREAKPOINT
         user = cls(user_name=user_name, password=password)
         session.add(user)
         session.commit()
+
+    @classmethod
+    def get_member_by_id(cls, user_id):
+        return session.query(cls).filter(
+            cls.id == int(user_id)
+        ).one_or_none()
