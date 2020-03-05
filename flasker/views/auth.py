@@ -1,13 +1,13 @@
 import functools
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for,
+    jsonify
 )
 from werkzeug.security import check_password_hash, generate_password_hash
+from flask_jwt_extended import create_access_token
 
 from ..models import User, db
-
-
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -44,22 +44,21 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+
+        if username is None or password is None:
+            return jsonify({"msg": "No username of password is provided"}), 400
+
         error = None
         member = User.get_member(username)
 
-        if member is None:
-            error = 'Incorrect username.'
-        elif not check_password_hash(member.password, password):
-            error = 'Incorrect password.'
+        if member is None or \
+                not check_password_hash(member.password, password):
 
-        if error is None:
-            session.clear()
-            session['user_id'] = member.id
-            return redirect(url_for('index'))
+            return jsonify({"msg": "Bad username or password"}), 401
 
-        flash(error)
 
-    return render_template('auth/login.html')
+        access_token = create_access_token(identity=username)
+        return jsonify(access_token=access_token), 200
 
 
 @bp.before_app_request

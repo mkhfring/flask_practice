@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask_jwt_extended import JWTManager
 
 from .views import auth
 from .cli import init_app
@@ -26,6 +27,9 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    jwt = JWTManager()
+    jwt.init_app(app)
 
     # a simple page that says hello
     @app.route('/hello')
