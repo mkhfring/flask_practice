@@ -3,7 +3,7 @@ import os
 from flask import Flask
 
 from .views import auth
-from .models import db
+from .cli import init_app
 
 
 def create_app(test_config=None):
@@ -32,7 +32,7 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
-    db.init_app(app)
+    init_app(app)
     app.register_blueprint(auth.bp)
 
     return app

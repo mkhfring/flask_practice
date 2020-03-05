@@ -11,7 +11,20 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     user_name = Column(String)
     password = Column(String)
-    posts = relationship("Post")
+    fist_name = Column(String)
+    last_name = Column(String)
+    phone_number = Column(String)
+    email = Column(String)
+
+    def __init__(self, user_name, password, first_name, last_name,
+                 phone_number, email):
+        self.user_name = user_name
+        self.password = password
+        self.fist_name = first_name
+        self.last_name = last_name
+        self.phone_number = phone_number
+        self.email = email
+
 
     @classmethod
     def get_member(cls, user_name):
@@ -20,8 +33,7 @@ class User(Base):
         ).one_or_none()
 
     @classmethod
-    def add_member(cls, user_name, password):
-        user = cls(user_name=user_name, password=password)
+    def add_member(cls, user):
         session.add(user)
         session.commit()
 
@@ -30,3 +42,4 @@ class User(Base):
         return session.query(cls).filter(
             cls.id == int(user_id)
         ).one_or_none()
+
