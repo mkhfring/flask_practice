@@ -17,13 +17,17 @@ class User(Base):
     email = Column(String)
 
     def __init__(self, user_name, password, first_name, last_name,
-                 phone_number, email):
+                 phone_number=None, email=None, sent_messages=[],
+                 received_messages=[]):
+
         self.user_name = user_name
         self.password = password
         self.fist_name = first_name
         self.last_name = last_name
         self.phone_number = phone_number
         self.email = email
+        self.sent_messages = sent_messages
+        self.received_messages = received_messages
 
 
     @classmethod
