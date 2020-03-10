@@ -3,25 +3,25 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 
 
-from .db import Base, session
+from .database import db
 
 
-class Message(Base):
+class Message(db.Model):
     __tablename__ = 'message'
 
-    id = Column(Integer, primary_key=True)
-    title = Column(String)
-    body = Column(String)
-    sender_id = Column(Integer, ForeignKey('users.id'))
-    receiver_id = Column(Integer, ForeignKey('users.id'))
-    replied_id = Column(Integer, ForeignKey('message.id'))
+    id = db.Column(Integer, primary_key=True)
+    title = db.Column(String)
+    body = db.Column(String)
+    sender_id = db.Column(Integer, ForeignKey('members.id'))
+    receiver_id = db.Column(Integer, ForeignKey('members.id'))
+    replied_id = db.Column(Integer, ForeignKey('message.id'))
     sender = relationship(
-        'User',
+        'Member',
         foreign_keys=[sender_id],
         backref='sent_messages'
     )
     receiver = relationship(
-        'User',
+        'Member',
         foreign_keys=[receiver_id],
         backref='received_messages'
     )
@@ -31,8 +31,7 @@ class Message(Base):
         uselist=False,
         remote_side=id
     )
-    created_at = Column(DateTime)
-
+    created_at = db.Column(DateTime)
 
     def __init__(self, title, body, create_at=None, reply_to=None):
         self.title = title

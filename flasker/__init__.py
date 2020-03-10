@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 
 from .views import auth
 from .cli import init_app
+from .models import db
 
 
 def create_app(test_config=None):
@@ -14,6 +15,8 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+    db.init_app(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing

@@ -2,19 +2,19 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
 
-from .db import Base, session
+from .database import db
 
 
-class User(Base):
-    __tablename__ = 'users'
+class Member(db.Model):
+    __tablename__ = 'members'
 
-    id = Column(Integer, primary_key=True)
-    user_name = Column(String)
-    password = Column(String)
-    fist_name = Column(String)
-    last_name = Column(String)
-    phone_number = Column(String)
-    email = Column(String)
+    id = db.Column(Integer, primary_key=True)
+    user_name = db.Column(String)
+    password = db.Column(String)
+    fist_name = db.Column(String)
+    last_name = db.Column(String)
+    phone_number = db.Column(String)
+    email = db.Column(String)
 
     def __init__(self, user_name, password, first_name, last_name,
                  phone_number=None, email=None, sent_messages=[],
@@ -29,21 +29,20 @@ class User(Base):
         self.sent_messages = sent_messages
         self.received_messages = received_messages
 
-
     @classmethod
     def get_member(cls, user_name):
-        return session.query(cls).filter(
+        return db.session.query(cls).filter(
             cls.user_name == user_name
         ).one_or_none()
 
     @classmethod
     def add_member(cls, user):
-        session.add(user)
-        session.commit()
+        db.session.add(user)
+        db.session.commit()
 
     @classmethod
     def get_member_by_id(cls, user_id):
-        return session.query(cls).filter(
+        return db.session.query(cls).filter(
             cls.id == int(user_id)
         ).one_or_none()
 

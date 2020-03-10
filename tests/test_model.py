@@ -1,4 +1,4 @@
-from flasker.models import User, Post, Message
+from flasker.models import Member, Post, Message
 
 def test_user(dbsession):
     message1 = Message(title="example1", body="this is example")
@@ -7,14 +7,14 @@ def test_user(dbsession):
         body="this is example2",
         reply_to=message1
     )
-    user1 = User(
+    user1 = Member(
         user_name='Mohamad',
         password='123456',
         first_name="Mohamad",
         last_name="Khajezade",
         sent_messages=[message1]
     )
-    user2 = User(
+    user2 = Member(
         user_name='example',
         password='123456',
         first_name="example",

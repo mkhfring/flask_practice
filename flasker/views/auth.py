@@ -7,7 +7,7 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_jwt_extended import create_access_token
 
-from ..models import User, db
+from ..models import Member, database
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -25,12 +25,12 @@ def register():
         elif not password:
             error = 'Password is required.'
 
-        member = User.get_member(username)
+        member = Member.get_member(username)
         if member:
             error = 'User {} is already registered.'.format(username)
 
         if error is None:
-            User.add_member(username, generate_password_hash(password))
+            Member.add_member(username, generate_password_hash(password))
 
             return redirect(url_for('auth.login'))
 
@@ -49,7 +49,7 @@ def login():
             return jsonify({"msg": "No username of password is provided"}), 400
 
         error = None
-        member = User.get_member(username)
+        member = Member.get_member(username)
 
         if member is None or \
                 not check_password_hash(member.password, password):
@@ -68,7 +68,7 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        member = User.get_member_by_id(user_id)
+        member = Member.get_member_by_id(user_id)
         if member:
             g.user = member
 
