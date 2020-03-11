@@ -3,8 +3,9 @@ import os
 from flask import Flask
 from flask_jwt_extended import JWTManager
 
-from .views import auth
+from .views import auth, member
 from .cli import init_app
+from .models.db import ma
 
 
 def create_app(test_config=None):
@@ -37,6 +38,8 @@ def create_app(test_config=None):
         return 'Hello, World!'
 
     init_app(app)
+    ma.init_app(app)
     app.register_blueprint(auth.bp)
+    app.register_blueprint(member.member)
 
     return app

@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
 
-from .db import Base, session
+from .db import Base, session, ma
 
 
 class User(Base):
@@ -46,4 +46,17 @@ class User(Base):
         return session.query(cls).filter(
             cls.id == int(user_id)
         ).one_or_none()
+
+class UserSchema(ma.Schema):
+
+
+    class Meta:
+        fields = (
+            "id",
+            "user_name",
+            "first_name",
+            "last_name",
+            "phone_number",
+            "email"
+        )
 
