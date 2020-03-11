@@ -1,4 +1,9 @@
+from io import BytesIO
+
+from sqlalchemy_media import StoreManager, File
+
 from flasker.models import User, Post, Message
+
 
 def test_user(dbsession):
     message1 = Message(title="example1", body="this is example")
@@ -28,4 +33,18 @@ def test_user(dbsession):
     assert len(user2.received_messages) > 0
     assert user1.sent_messages[0].title == 'example1'
     assert user2.received_messages[0].title == 'example2'
+
+
+def test_message_attachment(dbsession):
+    message1 = Message(title="example1", body="this is example")
+    sample_content = b'Simple text.'
+
+    with StoreManager(dbsession):
+        message1.attachment =  File.create_from(
+            BytesIO(sample_content),
+            content_type='text/plain',
+            extension='.txt'
+        )
+        dbsession.add(message1)
+        dbsession.flush()
 

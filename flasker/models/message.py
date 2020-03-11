@@ -1,9 +1,11 @@
 
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
+from sqlalchemy_media import File
 
 
 from .db import Base, session
+from .types import Json
 
 
 class Message(Base):
@@ -12,6 +14,7 @@ class Message(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String)
     body = Column(String)
+    attachment = Column(File.as_mutable(Json))
     sender_id = Column(Integer, ForeignKey('users.id'))
     receiver_id = Column(Integer, ForeignKey('users.id'))
     replied_id = Column(Integer, ForeignKey('message.id'))
@@ -32,7 +35,6 @@ class Message(Base):
         remote_side=id
     )
     created_at = Column(DateTime)
-
 
     def __init__(self, title, body, create_at=None, reply_to=None):
         self.title = title

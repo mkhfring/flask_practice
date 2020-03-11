@@ -1,18 +1,30 @@
+import functools
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 import pytest
+from sqlalchemy_media import StoreManager, FileSystemStore
 
 from flasker.models.db import  Base
+
+
+base_url = 'http://static1.example.orm'
+TEMP_PATH = '/tmp/sqlalchemy-media'
 
 
 @pytest.fixture(scope='session')
 def engine():
 
-    return create_engine('sqlite:///flasker.db')
+    return create_engine('sqlite:///:memory:')
 
 
 @pytest.yield_fixture(scope='session')
 def tables(engine):
+    StoreManager.register(
+        'fs',
+        functools.partial(FileSystemStore, TEMP_PATH, base_url),
+        default=True
+    )
     Base.metadata.create_all(engine)
     yield
     Base.metadata.drop_all(engine)
