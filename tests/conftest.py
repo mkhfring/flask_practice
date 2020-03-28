@@ -8,7 +8,7 @@ from sqlalchemy_media import StoreManager, FileSystemStore
 from flasker.models.db import  Base
 
 
-base_url = 'http://static1.example.orm'
+base_url = 'http://localhost:5000/assets'
 TEMP_PATH = '/tmp/sqlalchemy-media'
 
 

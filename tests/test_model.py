@@ -40,11 +40,7 @@ def test_message_attachment(dbsession):
     sample_content = b'Simple text.'
 
     with StoreManager(dbsession):
-        message1.attachment =  File.create_from(
-            BytesIO(sample_content),
-            content_type='text/plain',
-            extension='.txt'
-        )
+        message1.attachment = BytesIO(sample_content)
         dbsession.add(message1)
         dbsession.flush()
 
