@@ -1,11 +1,14 @@
 import os
+import functools
 
 from flask import Flask
 from flask_jwt_extended import JWTManager
+from sqlalchemy_media import StoreManager, FileSystemStore
 
-from .views import auth, member
+from .views import auth, member, fake_api
 from .cli import init_app
 from .models.db import ma
+
 
 
 def create_app(test_config=None):
@@ -41,5 +44,15 @@ def create_app(test_config=None):
     ma.init_app(app)
     app.register_blueprint(auth.bp)
     app.register_blueprint(member.member)
+    app.register_blueprint(fake_api.fake)
 
+#    StoreManager.register(
+#        'fs',
+#        functools.partial(
+#            FileSystemStore,
+#            settings.storage.local_directory,
+#            base_url=settings.storage.base_url,
+#        ),
+#        default=True
+#    )
     return app
