@@ -6,6 +6,7 @@ import pytest
 from sqlalchemy_media import StoreManager, FileSystemStore
 
 from flasker.models.db import  Base
+from flasker import create_app
 
 
 base_url = 'http://localhost:5000/assets'
@@ -46,4 +47,21 @@ def dbsession(engine, tables):
     transaction.rollback()
     # put back the connection to the connection pool
     connection.close()
+
+@pytest.fixture(scope='module')
+def test_client():
+    import pudb; pudb.set_trace()  # XXX BREAKPOINT
+    flask_app = create_app('config.TestingConfig')
+
+    # Flask provides a way to test your application by exposing the Werkzeug test Client
+    # and handling the context locals for you.
+    testing_client = flask_app.test_client()
+
+    # Establish an application context before running the tests.
+    ctx = flask_app.app_context()
+    ctx.push()
+
+    yield testing_client  # this is where the testing happens!
+    shutil.rmtree(TEST_DATA_DIRECTORY)
+    ctx.pop()
 

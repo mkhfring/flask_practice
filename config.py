@@ -10,6 +10,7 @@ class Config(object):
     TEMP_PATH = '/tmp/sqlalchemy-media'
 
 
+
 class DevelopmentConfig(Config):
     """
     Development Configuration
@@ -27,5 +28,4 @@ class TestingConfig(Config):
     """Configurations for Testing, with a separate test database."""
     TESTING = True
     DEBUG = True
-
 
