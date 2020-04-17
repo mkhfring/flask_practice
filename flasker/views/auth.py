@@ -16,6 +16,7 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
+
         username = request.form['username']
         password = request.form['password']
         error = None
@@ -42,8 +43,11 @@ def register():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        if not request.is_json:
+            return jsonify({"msg": "Missing JSON in request"}), 400
+
+        username = request.json.get('username', None)
+        password = request.json.get('password', None)
 
         if username is None or password is None:
             return jsonify({"msg": "No username of password is provided"}), 400

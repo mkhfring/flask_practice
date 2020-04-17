@@ -50,8 +50,8 @@ def dbsession(engine, tables):
 
 @pytest.fixture(scope='module')
 def test_client():
-    import pudb; pudb.set_trace()  # XXX BREAKPOINT
-    flask_app = create_app('config.TestingConfig')
+    flask_app = create_app()
+    flask_app.config['TESTING'] = True
 
     # Flask provides a way to test your application by exposing the Werkzeug test Client
     # and handling the context locals for you.
@@ -62,6 +62,6 @@ def test_client():
     ctx.push()
 
     yield testing_client  # this is where the testing happens!
-    shutil.rmtree(TEST_DATA_DIRECTORY)
+#    shutil.rmtree(TEST_DATA_DIRECTORY)
     ctx.pop()
 
