@@ -16,7 +16,7 @@ try:
 
 #    ws = create_connection("ws://localhost:9090/")
     ws = websocket.WebSocket()
-    ws.connect("ws://localhost:9090/")
+    ws.connect("ws://0.0.0.0:9989/")
     ws.send(json.dumps(
         {"cmd": 'normal_print', "path": sys.argv[1], "action": sys.argv[2], "from": "usb"}))
     result = ws.recv()

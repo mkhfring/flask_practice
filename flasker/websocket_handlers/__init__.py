@@ -1,5 +1,6 @@
 
 from .dispature import Dispature
 from .message_handler import MessageHandler
-from .action_power_off_handler import NormalPrintHandler
+from .normal_print_handler import NormalPrintHandler
+from .upload_print_handler import UploadPrintHandler
 

@@ -2,7 +2,8 @@ import json
 
 from websocket_server import WebsocketServer
 
-from websocket_handlers import Dispature, NormalPrintHandler
+from websocket_handlers import Dispature, NormalPrintHandler, \
+    UploadPrintHandler
 
 
 class WebSocketManager:
@@ -14,7 +15,8 @@ class WebSocketManager:
         self.ws_clients = []
         self.dispature = Dispature(
             [
-                NormalPrintHandler()
+                NormalPrintHandler(),
+                UploadPrintHandler()
             ]
         )
 
@@ -48,5 +50,5 @@ class WebSocketManager:
                 print("ws_send_message", str(e))
 
 if __name__ == '__main__':
-    web_socket = WebSocketManager('localhost', 9090)
+    web_socket = WebSocketManager('0.0.0.0', 9989)
     web_socket.start_websocket()

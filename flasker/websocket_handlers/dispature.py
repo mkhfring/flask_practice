@@ -11,7 +11,6 @@ class Dispature:
     def consume(self, message):
         try:
 #            self.message = self.queue.get(block=True, timeout=2)
-            from pudb import set_trace; set_trace()
             self.message = message
             if self.message and len(self.handlers) > 0:
                 for handler in self.handlers:

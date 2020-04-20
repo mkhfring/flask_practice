@@ -123,7 +123,6 @@ class WebsocketServer(ThreadingMixIn, TCPServer, API):
         TCPServer.__init__(self, (host, port), WebSocketHandler)
 
     def _message_received_(self, handler, msg):
-        import pudb; pudb.set_trace()  # XXX BREAKPOINT
         self.message_received(self.handler_to_client(handler), self, msg)
 
     def _ping_received_(self, handler, msg):
