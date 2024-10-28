@@ -5,7 +5,7 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from sqlalchemy_media import StoreManager, FileSystemStore
 
-from .views import auth, member, fake_api
+from .controllers import auth, member, fake_api
 from .cli import init_app
 from .models.db import ma
 
