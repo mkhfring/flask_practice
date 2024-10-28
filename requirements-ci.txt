@@ -1,4 +1,5 @@
 sqlalchemy
 flask-jwt-extended
 flask-marshmallow
+sqlalchemy-media
 
