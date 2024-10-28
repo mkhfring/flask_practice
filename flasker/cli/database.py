@@ -17,7 +17,7 @@ def init_db_command():
 def db_mock_command():
     user1_dict = {
         "user_name":"example",
-        "password":generate_password_hash("123456"),
+        "password":generate_password_hash("123456", method="pbkdf2:sha256"),
         "first_name":"example",
         "last_name":"example",
         "phone_number":"123456",
@@ -25,7 +25,7 @@ def db_mock_command():
     }
     user2_dict = {
         "user_name":"admin",
-        "password":generate_password_hash("123456"),
+        "password":generate_password_hash("123456", method="pbkdf2:sha256"),
         "first_name":"admin",
         "last_name":"admin",
         "phone_number":"123456",
