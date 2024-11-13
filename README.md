@@ -37,5 +37,9 @@ flask init_db
 ```
 flask add_members
 ```
+run the project:
 
+```
+flask run
+```
 
