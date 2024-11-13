@@ -2,4 +2,5 @@ pudb
 ipython
 pytest
 pytest-pudb
+psycopg2-binary
 -r requirements-ci.txt
