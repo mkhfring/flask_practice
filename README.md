@@ -70,3 +70,47 @@ In the current directory, you can find the files required to install the project
 │   ├── config.py
 ```
 Inside the `__init__.py` file, the Flask application is configured. In this file, you need to import and register your controllers (routes).
+
+## Let’s Add a New Controller to This Project
+
+Inside the controllers package, create a new file, such as test.py, at flasker/controllers/test.py.
+
+Now paste the following code into this file:
+
+
+```python
+from flask import (
+    Blueprint, flash, g, redirect, render_template, request, session, url_for,
+    jsonify
+)
+
+
+test = Blueprint('test', __name__)
+
+
+@test.route('/test', methods=('POST', 'GET'))
+def get_scanner():
+    if request.method == 'GET':
+        return jsonify(
+            [
+              {
+                "test": True
+              }
+            ]
+        ), 200
+```
+then, go to the `flasker/__init__.py` and import `test_api`.
+
+```python
+from .controllers import auth, member, fake_api, test_api
+```
+**Note: The import already exists; you only need to import test_api.**
+
+Register the controller inside the create_app function after init_app(app).
+
+```python
+app.register_blueprint(test_api.test)
+```
+**Note: check the auth.py file inside the `controllers` package to see how we can implement authentication**
+
+
