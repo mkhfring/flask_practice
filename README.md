@@ -114,3 +114,45 @@ app.register_blueprint(test_api.test)
 **Note: check the auth.py file inside the `controllers` package to see how we can implement authentication**
 
 
+## Let’s Add a New model to This Project
+Make a new file name `example_model.py` inside the `flasker/models` package. 
+paste the following code inside this file:
+
+```python
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+
+
+from .db import Base, session, ma
+
+
+class Example(Base):
+    __tablename__ = 'examples'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
+    def __init__(self, name):
+
+        self.name = name
+
+class ExampleSchema(ma.Schema):
+
+
+    class Meta:
+        fields = (
+            "id",
+            "name"
+        )
+```
+Now, inside `models/__init__.py` import this new model.
+
+```python
+from .example_model import Example
+```
+Destroy the previous database (if you are using SQLite, then just remove the file) and run 
+
+```
+flaks init_db
+```
+
