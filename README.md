@@ -42,4 +42,31 @@ run the project:
 ```
 flask run
 ```
+## The structure of the project (In the following tree, only important entities are listed)
+```
+├── flasker
+│   ├── cli
+│   ├── controllers
+│   ├── models
+│   ├── templates
+│   ├── websoket_handlers
+│   ├── __init__.py
+│   ├── config.py
+├── tests
+├── .gitignore
+├── setup.py
+├── requirements-dev.txt
 
+```
+In the current directory, you can find the files required to install the project, such as `requirements-dev.txt`, `setup.py`, etc., as well as two directories: `tests` and `flasker`. The tests directory is a package designed to implement test-driven development. You can use the examples in this package to implement your own tests. The main Flask application is implemented inside the flasker package. The structure of the flasker package is as follows:
+```
+├── flasker
+│   ├── cli
+│   ├── controllers
+│   ├── models
+│   ├── templates
+│   ├── websoket_handlers
+│   ├── __init__.py
+│   ├── config.py
+```
+Inside the `__init__.py` file, the Flask application is configured. In this file, you need to import and register your controllers (routes).
